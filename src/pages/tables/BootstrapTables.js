@@ -2,10 +2,10 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
-
 import { PageTrafficTable, RankingTable } from "../../components/Tables";
 
-export default () => {
+// Refactored to a named function instead of an arrow function
+function BootstrapTables() {
   return (
     <>
       {/* <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -26,4 +26,6 @@ export default () => {
       <RankingTable /> */}
     </>
   );
-};
+}
+
+export default BootstrapTables;
