@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Card, Container, Alert } from "@themesberg/react-bootstrap";
 import Code from "../../components/Code";
 
-// Refactor the component to a named function instead of an arrow function
+// Named function for the component
 function DocsQuickStart() {
   return (
     <Container className="px-0">
