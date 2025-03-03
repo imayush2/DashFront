@@ -32,6 +32,7 @@ export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("user"); // State to store the role (user/admin)
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const history = useHistory(); // Use history hook for redirecting
@@ -61,6 +62,7 @@ export default () => {
           name,
           email,
           password,
+          role, // Include the role in the registration data
         }
       );
 
@@ -106,7 +108,7 @@ export default () => {
             >
               <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="text-center text-md-center mb-4 mt-md-0">
-                  <h3 className="mb-0">Create an account</h3>
+                  <h3 className="mb-0">Create a new user</h3>
                 </div>
 
                 {/* Display error or success messages */}
@@ -144,6 +146,19 @@ export default () => {
                         onChange={(e) => setEmail(e.target.value)} // Update email state
                       />
                     </InputGroup>
+                  </Form.Group>
+
+                  {/* Role selection for Admin */}
+                  <Form.Group id="role" className="mb-4">
+                    <Form.Label>Select Role</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </Form.Control>
                   </Form.Group>
 
                   <Form.Group id="password" className="mb-4">

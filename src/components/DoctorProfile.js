@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Row, Card, Container } from "react-bootstrap"; // Importing necessary components from react-bootstrap
+import { Button, Col, Row, Card, Container, Modal } from "react-bootstrap"; // Added Modal import
 import { FaEllipsisH } from "react-icons/fa"; // Import FontAwesome Horizontal Ellipsis icon
 
 const DoctorProfile = ({ doctorData }) => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
   const handleViewMoreClick = (doctor) => {
     setSelectedDoctor(doctor);
+    setShowModal(true); // Show the modal when doctor is selected
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal
+    setSelectedDoctor(null); // Reset selected doctor
   };
 
   return (
@@ -17,8 +24,6 @@ const DoctorProfile = ({ doctorData }) => {
           <Row>
             <Col xs={12} xl={12} className="mb-4">
               <Card style={{ minHeight: "500px" }}>
-                {" "}
-                {/* Increased height of the card */}
                 <Card.Header>
                   <h5>Doctors List</h5>
                 </Card.Header>
@@ -85,24 +90,38 @@ const DoctorProfile = ({ doctorData }) => {
         </Col>
       </Row>
 
-      {/* Optional: Modal or Component to show doctor details */}
-      {/* {selectedDoctor && (
-        <div className="doctor-details mt-4">
-          <Card>
-            <Card.Header>
-              <h5>Doctor Details</h5>
-            </Card.Header>
-            <Card.Body>
-              <h6>Biography:</h6>
-              <p>{selectedDoctor.biography}</p>
-              <h6>Experience:</h6>
-              <p>{selectedDoctor.experience} years</p>
-              <h6>Contact:</h6>
-              <p>{selectedDoctor.contact}</p>
-            </Card.Body>
-          </Card>
-        </div>
-      )} */}
+      {/* Modal for displaying doctor details */}
+      {selectedDoctor && (
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Doctor Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h6>Specialty:</h6>
+            <p>{selectedDoctor.specialty}</p>
+            <h6>Score:</h6>
+            <p>{selectedDoctor.score}</p>
+            <h6>Diseases:</h6>
+            <ul>
+              {selectedDoctor.diseases &&
+                selectedDoctor.diseases.map((disease, idx) => (
+                  <li key={idx}>{disease}</li>
+                ))}
+            </ul>
+            <h6>Biography:</h6>
+            <p>{selectedDoctor.biography || "No biography available"}</p>
+            <h6>Experience:</h6>
+            <p>{selectedDoctor.experience} years</p>
+            <h6>Contact:</h6>
+            <p>{selectedDoctor.contact || "Not available"}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </Container>
   );
 };
@@ -117,6 +136,7 @@ DoctorProfile.propTypes = {
       biography: PropTypes.string,
       experience: PropTypes.number,
       contact: PropTypes.string,
+      diseases: PropTypes.arrayOf(PropTypes.string), // List of diseases
     })
   ).isRequired,
 };

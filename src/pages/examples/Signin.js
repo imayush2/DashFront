@@ -7,8 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebookF,
-  faGithub,
   faTwitter,
+  faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   Col,
@@ -21,8 +21,8 @@ import {
   InputGroup,
   Alert,
 } from "@themesberg/react-bootstrap";
-import { Link, useHistory } from "react-router-dom"; // Import useHistory
-import axios from "axios"; // Import axios for API requests
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
@@ -30,6 +30,7 @@ import BgImage from "../../assets/img/illustrations/signin.svg";
 export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // Default to user
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -48,23 +49,35 @@ export default () => {
     }
 
     try {
-      // Send POST request to backend API (replace with your API endpoint)
+      // Send POST request to backend API
       const response = await axios.post(
         "http://localhost:4100/api/auth/login",
         {
           email,
           password,
+          role, // Send role information
         }
       );
 
       if (response.data.success) {
-        setSuccessMessage("Login successful!");
-        // Redirect to dashboard after successful login
-        history.push(Routes.DashboardOverview.path); // Use history.push to navigate
+        setSuccessMessage(response.data.message || "Login successful!");
+
+        // Store token in localStorage for persistence (or cookies if preferred)
+        localStorage.setItem("token", response.data.token);
+
+        // Redirect based on the user's role
+        if (response.data.role === "admin") {
+          // Redirect to Admin Dashboard if role is admin
+          history.push(Routes.AdminDashboard.path); // Admin Dashboard
+        } else {
+          // Redirect to User Dashboard if role is user
+          history.push(Routes.DashboardOverview.path); // User Dashboard
+        }
       } else {
         setErrorMessage(response.data.message || "Invalid credentials");
       }
     } catch (error) {
+      console.error(error); // Log the error for debugging
       setErrorMessage("An error occurred. Please try again later.");
     }
   };
@@ -114,9 +127,24 @@ export default () => {
                         required
                         type="email"
                         placeholder="example@company.com"
-                        value={email} // Bind state to input
-                        onChange={(e) => setEmail(e.target.value)} // Update state on input change
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
+                    </InputGroup>
+                  </Form.Group>
+
+                  <Form.Group id="role" className="mb-4">
+                    <Form.Label>User Role</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        as="select"
+                        required
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </Form.Control>
                     </InputGroup>
                   </Form.Group>
 
@@ -130,8 +158,8 @@ export default () => {
                         required
                         type="password"
                         placeholder="Password"
-                        value={password} // Bind state to input
-                        onChange={(e) => setPassword(e.target.value)} // Update state on input change
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </InputGroup>
                   </Form.Group>

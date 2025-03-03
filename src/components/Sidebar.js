@@ -207,7 +207,7 @@ export default (props = {}) => {
               <NavItem
                 //
                 title="Data Scrapper"
-                link="dummylink"
+                link={Routes.Forms.path}
                 // target="_blank"
                 // badgeText="Pro"
                 icon={faInbox}
@@ -220,7 +220,7 @@ export default (props = {}) => {
               <NavItem
                 title="User Role"
                 icon={faUser}
-                link={Routes.Settings.path}
+                link={Routes.Tabs.path}
               />
               <NavItem
                 external
