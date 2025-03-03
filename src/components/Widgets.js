@@ -106,6 +106,7 @@ export const ChoosePhotoWidget = (props) => {
     //     </div>
     //   </Card.Body>
     // </Card>
+
     <></>
   );
 };
