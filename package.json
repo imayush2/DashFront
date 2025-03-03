@@ -87,5 +87,8 @@
   },
   "devDependencies": {
     "react-app-rewired": "^2.2.1"
-  }
+  },
+  "engines": {
+    "node": "21.x"
+  }  
 }
