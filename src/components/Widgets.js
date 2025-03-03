@@ -164,37 +164,37 @@ export const CircleChartWidget = (props) => {
   const series = data.map((d) => d.value);
 
   return (
-    // <Card border="light" className="shadow-sm">
-    //   <Card.Body>
-    //     <Row className="d-block d-xl-flex align-items-center">
-    //       <Col
-    //         xs={12}
-    //         xl={5}
-    //         className="text-xl-center d-flex align-items-center justify-content-xl-center mb-3 mb-xl-0"
-    //       >
-    //         <CircleChart series={series} />
-    //       </Col>
-    //       <Col xs={12} xl={7} className="px-xl-0">
-    //         <h5 className="mb-3">{title}</h5>
+    <Card border="light" className="shadow-sm">
+      <Card.Body>
+        <Row className="d-block d-xl-flex align-items-center">
+          <Col
+            xs={12}
+            xl={5}
+            className="text-xl-center d-flex align-items-center justify-content-xl-center mb-3 mb-xl-0"
+          >
+            <CircleChart series={series} />
+          </Col>
+          <Col xs={12} xl={7} className="px-xl-0">
+            <h5 className="mb-3">{title}</h5>
 
-    //         {data.map((d) => (
-    //           <h6
-    //             key={`circle-element-${d.id}`}
-    //             className="fw-normal text-gray"
-    //           >
-    //             <FontAwesomeIcon
-    //               icon={d.icon}
-    //               className={`icon icon-xs text-${d.color} w-20 me-1`}
-    //             />
-    //             {` ${d.label} `}
-    //             {`${d.value}%`}
-    //           </h6>
-    //         ))}
-    //       </Col>
-    //     </Row>
-    //   </Card.Body>
-    // </Card>
-    <></>
+            {data.map((d) => (
+              <h6
+                key={`circle-element-${d.id}`}
+                className="fw-normal text-gray"
+              >
+                <FontAwesomeIcon
+                  icon={d.icon}
+                  className={`icon icon-xs text-${d.color} w-20 me-1`}
+                />
+                {` ${d.label} `}
+                {`${d.value}%`}
+              </h6>
+            ))}
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+    // <></>
   );
 };
 
@@ -206,36 +206,36 @@ export const BarChartWidget = (props) => {
   const percentageColor = percentage < 0 ? "text-danger" : "text-success";
 
   return (
-    // <Card border="light" className="shadow-sm">
-    //   <Card.Body className="d-flex flex-row align-items-center flex-0 border-bottom">
-    //     <div className="d-block">
-    //       <h6 className="fw-normal text-gray mb-2">{title}</h6>
-    //       <h3>{value}</h3>
-    //       <small className="mt-2">
-    //         <FontAwesomeIcon
-    //           icon={percentageIcon}
-    //           className={`${percentageColor} me-1`}
-    //         />
-    //         <span className={`${percentageColor} fw-bold`}>{percentage}%</span>
-    //       </small>
-    //     </div>
-    //     <div className="d-block ms-auto">
-    //       {data.map((d) => (
-    //         <div
-    //           key={`bar-element-${d.id}`}
-    //           className="d-flex align-items-center text-end mb-2"
-    //         >
-    //           <span className={`shape-xs rounded-circle bg-${d.color} me-2`} />
-    //           <small className="fw-normal">{d.label}</small>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </Card.Body>
-    //   <Card.Body className="p-2">
-    //     <BarChart labels={labels} series={series} />
-    //   </Card.Body>
-    // </Card>
-    <></>
+    <Card border="light" className="shadow-sm">
+      <Card.Body className="d-flex flex-row align-items-center flex-0 border-bottom">
+        <div className="d-block">
+          <h6 className="fw-normal text-gray mb-2">{title}</h6>
+          <h3>{value}</h3>
+          <small className="mt-2">
+            <FontAwesomeIcon
+              icon={percentageIcon}
+              className={`${percentageColor} me-1`}
+            />
+            <span className={`${percentageColor} fw-bold`}>{percentage}%</span>
+          </small>
+        </div>
+        <div className="d-block ms-auto">
+          {data.map((d) => (
+            <div
+              key={`bar-element-${d.id}`}
+              className="d-flex align-items-center text-end mb-2"
+            >
+              <span className={`shape-xs rounded-circle bg-${d.color} me-2`} />
+              <small className="fw-normal">{d.label}</small>
+            </div>
+          ))}
+        </div>
+      </Card.Body>
+      <Card.Body className="p-2">
+        <BarChart labels={labels} series={series} />
+      </Card.Body>
+    </Card>
+    // <></>
   );
 };
 
