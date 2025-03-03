@@ -27,7 +27,8 @@ import axios from "axios"; // Import axios for sending HTTP requests
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
 
-export default () => {
+// Convert arrow function to function declaration
+function SignUp() {
   const [name, setName] = useState(""); // Added name state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -247,4 +248,7 @@ export default () => {
       </section>
     </main>
   );
-};
+}
+
+// Export the component as default
+export default SignUp;

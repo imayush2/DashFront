@@ -9,13 +9,12 @@ import {
   Button,
   Container,
 } from "@themesberg/react-bootstrap";
-
 import { Link } from "react-router-dom";
-
 import { Routes } from "../../routes";
 import NotFoundImage from "../../assets/img/illustrations/404.svg";
 
-export default () => {
+// Converted to a function declaration
+function NotFoundPage() {
   return (
     <main>
       <section className="vh-100 d-flex align-items-center justify-content-center">
@@ -55,4 +54,7 @@ export default () => {
       </section>
     </main>
   );
-};
+}
+
+// Export the function as default
+export default NotFoundPage;
