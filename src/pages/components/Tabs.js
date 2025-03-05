@@ -21,7 +21,7 @@ import {
   InputGroup,
   Alert,
 } from "@themesberg/react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios"; // Import axios for sending HTTP requests
 
 import { Routes } from "../../routes";
@@ -33,18 +33,14 @@ export default () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const history = useHistory(); // Use history hook for redirecting
+  const [users, setUsers] = useState([]); // State for storing list of users
+  const [isFormVisible, setFormVisible] = useState(false); // State for toggling form visibility
 
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage(""); // Reset error message
     setSuccessMessage(""); // Reset success message
-
-    // Debugging: log state values to ensure they are being updated correctly
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
 
     // Basic form validation
     if (!name || !email || !password) {
@@ -71,20 +67,21 @@ export default () => {
       );
 
       if (response.data.success) {
-        setSuccessMessage(
-          "Registration successful! Redirecting to login page."
-        );
-        // Redirect to login page after successful registration
-        setTimeout(() => {
-          history.push(Routes.Signin.path);
-        }, 2000);
+        setSuccessMessage("Registration successful!");
+
+        // Add the new user to the users list in the state
+        setUsers([...users, { name, email, password }]);
+
+        // Reset form fields after successful submission
+        setName("");
+        setEmail("");
+        setPassword("");
       } else {
         setErrorMessage(
           response.data.message || "An error occurred. Please try again."
         );
       }
     } catch (error) {
-      // Enhanced error handling
       if (error.response && error.response.data) {
         setErrorMessage(error.response.data.message || "Registration failed");
       } else {
@@ -93,6 +90,10 @@ export default () => {
         );
       }
     }
+  };
+
+  const toggleFormVisibility = () => {
+    setFormVisible(!isFormVisible);
   };
 
   return (
@@ -119,7 +120,7 @@ export default () => {
             >
               <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="text-center text-md-center mb-4 mt-md-0">
-                  <h3 className="mb-0">Add a new user</h3>
+                  <h3 className="mb-0">Manage Users</h3>
                 </div>
 
                 {/* Display error or success messages */}
@@ -128,60 +129,89 @@ export default () => {
                   <Alert variant="success">{successMessage}</Alert>
                 )}
 
-                <Form className="mt-4" onSubmit={handleSubmit}>
-                  <Form.Group id="name" className="mb-4">
-                    <Form.Label>Your Name</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        type="text"
-                        placeholder="Your Name"
-                        value={name} // Bind name state
-                        onChange={(e) => setName(e.target.value)} // Update name state
-                      />
-                    </InputGroup>
-                  </Form.Group>
+                {/* Button to toggle the form */}
+                <Button
+                  variant="primary"
+                  onClick={toggleFormVisibility}
+                  className="w-100 mb-3"
+                >
+                  {isFormVisible ? "Cancel" : "Add User"}
+                </Button>
 
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Email</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEnvelope} />
-                      </InputGroup.Text>
-                      <Form.Control
-                        type="email"
-                        placeholder="example@company.com"
-                        value={email} // Bind email state
-                        onChange={(e) => setEmail(e.target.value)} // Update email state
-                      />
-                    </InputGroup>
-                  </Form.Group>
+                {/* If the form is visible, display the form */}
+                {isFormVisible && (
+                  <Form className="mt-4" onSubmit={handleSubmit}>
+                    <Form.Group id="name" className="mb-4">
+                      <Form.Label>Your Name</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="text"
+                          placeholder="Your Name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                      </InputGroup>
+                    </Form.Group>
 
-                  <Form.Group id="password" className="mb-4">
-                    <Form.Label>Your Password</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faUnlockAlt} />
-                      </InputGroup.Text>
-                      <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        value={password} // Bind password state
-                        onChange={(e) => setPassword(e.target.value)} // Update password state
-                      />
-                    </InputGroup>
-                  </Form.Group>
+                    <Form.Group id="email" className="mb-4">
+                      <Form.Label>Your Email</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faEnvelope} />
+                        </InputGroup.Text>
+                        <Form.Control
+                          type="email"
+                          placeholder="example@company.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </InputGroup>
+                    </Form.Group>
 
-                  <FormCheck type="checkbox" className="d-flex mb-4">
-                    <FormCheck.Input id="terms" className="me-2" />
-                    <FormCheck.Label htmlFor="terms">
-                      I agree to the <Card.Link>terms and conditions</Card.Link>
-                    </FormCheck.Label>
-                  </FormCheck>
+                    <Form.Group id="password" className="mb-4">
+                      <Form.Label>Your Password</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faUnlockAlt} />
+                        </InputGroup.Text>
+                        <Form.Control
+                          type="password"
+                          placeholder="Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </InputGroup>
+                    </Form.Group>
 
-                  <Button variant="primary" type="submit" className="w-100">
-                    Add user
-                  </Button>
-                </Form>
+                    <FormCheck type="checkbox" className="d-flex mb-4">
+                      <FormCheck.Input id="terms" className="me-2" />
+                      <FormCheck.Label htmlFor="terms">
+                        I agree to the{" "}
+                        <Card.Link>terms and conditions</Card.Link>
+                      </FormCheck.Label>
+                    </FormCheck>
+
+                    <Button variant="primary" type="submit" className="w-100">
+                      Add user
+                    </Button>
+                  </Form>
+                )}
+
+                {/* Display the list of users */}
+                <div className="mt-4">
+                  <h4>Added Users</h4>
+                  <ul>
+                    {users.length === 0 ? (
+                      <li>No users added yet.</li>
+                    ) : (
+                      users.map((user, index) => (
+                        <li key={index}>
+                          {user.name} - {user.email}
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </div>
               </div>
             </Col>
           </Row>

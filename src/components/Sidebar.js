@@ -47,6 +47,7 @@ import ThemesbergLogo from "../assets/img/themesberg.svg";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import doctor from "../assets/img/doctor.jpg";
+import Logout from "../pages/Upgrade";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -192,12 +193,9 @@ export default (props = {}) => {
                 <FontAwesomeIcon icon={faTimes} />
               </Nav.Link>
             </div>
+
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem
-                title="Sky walker"
-                link={Routes.Presentation.path}
-                image={doctor}
-              />
+              <NavItem title="Sky walker" link={"#"} image={doctor} />
 
               <NavItem
                 title="Dashboard"
@@ -331,14 +329,16 @@ export default (props = {}) => {
                 <Button variant="secondary">SignUp</Button>
               </Link> */}
 
-              <Button
+              <Logout />
+
+              {/* <Button
                 as={Link}
                 to={Routes.Upgrade.path}
                 variant="secondary"
                 className="upgrade-to-pro"
               >
                 <FontAwesomeIcon className="me-1" /> Logout
-              </Button>
+              </Button> */}
             </Nav>
           </div>
         </SimpleBar>

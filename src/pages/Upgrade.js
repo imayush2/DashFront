@@ -1,180 +1,120 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faExternalLinkAlt,
-  faDownload,
-  faCheckCircle,
-  faRocket,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { Col, Row, Button } from "@themesberg/react-bootstrap";
-import { Table } from "@themesberg/react-bootstrap";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { Button, Alert } from "@themesberg/react-bootstrap";
+import { useHistory } from "react-router-dom";
 
-// Refactored to use a named function
-function Upgrade() {
+const Logout = () => {
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [isMounted, setIsMounted] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // State to manage the black screen overlay
+
+  useEffect(() => {
+    // Cleanup function to track whether the component is mounted
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    setIsLoggingOut(true); // Show the black screen overlay
+
+    try {
+      console.log("Logging out... Sending logout request");
+
+      const response = await fetch("http://localhost:4100/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      console.log("Response status:", response.status);
+
+      if (response.ok) {
+        console.log("Logout successful. Redirecting to SignIn page.");
+        localStorage.removeItem("authToken");
+
+        if (isMounted) {
+          setSuccess("You have logged out successfully!");
+          // Wait for 2 seconds to let the user see the message before redirecting
+          setTimeout(() => {
+            history.push("/examples/sign-in");
+          }, 2000);
+        }
+      } else {
+        console.error("Logout failed:", response.statusText);
+        if (isMounted) {
+          setError("Logout failed. Please try again.");
+        }
+      }
+    } catch (error) {
+      console.error("Logout request failed:", error);
+      if (isMounted) {
+        setError("An error occurred while logging out.");
+      }
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
-    <>
-      <Row className="mt-lg-5 mt-4 d-flex justify-content-center">
-        <Col xl={8}>
-          <h1 className="text-center fw-bolder">
-            Upgrade to Pro <FontAwesomeIcon icon={faRocket} className="ms-1" />
-          </h1>
-          <p className="text-center lead mb-lg-5 mb-4">
-            Looking to take React development to the next level? Check out the
-            premium version of Volt React Dashboard.
-          </p>
-          <Table className="comparison-table table-striped">
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0"></th>
-                <th className="border-0">
-                  <h6 className="fw-bolder">What is in demo?</h6>
-                </th>
-                <th className="border-0 fw-bolder">
-                  <h6 className="fw-bolder">What is in Pro version?</h6>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border-0">React Components</td>
-                <td className="border-0">100</td>
-                <td className="border-0">200+</td>
-              </tr>
-              <tr>
-                <td className="border-0">Dashboard Pages</td>
-                <td className="border-0">10</td>
-                <td className="border-0">20</td>
-              </tr>
-              <tr>
-                <td className="border-0">Customized Plugins</td>
-                <td className="border-0">2</td>
-                <td className="border-0">6</td>
-              </tr>
-              <tr>
-                <td className="border-0">Sass Source Files</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0">Documentation</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0">Advanced Sidebar</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    className="ms-1 text-danger"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0">Calendar</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    className="ms-1 text-danger"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0">Mapbox</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    className="ms-1 text-danger"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0">Tech Support</td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    className="ms-1 text-danger"
-                  />
-                </td>
-                <td className="border-0">
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="ms-1 text-success"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="border-0"></td>
-                <td className="border-0">
-                  <Button
-                    href="https://themesberg.com/product/dashboard/volt-react"
-                    target="_blank"
-                    variant="primary"
-                    className="m-0 mt-3 mb-3"
-                  >
-                    <FontAwesomeIcon icon={faDownload} className="me-1" />{" "}
-                    Download
-                  </Button>
-                </td>
-                <td className="border-0">
-                  <Button
-                    href="https://demo.themesberg.com/volt-pro-react/#/"
-                    target="_blank"
-                    variant="secondary"
-                    className="m-0 mt-3"
-                  >
-                    Demo Volt React Pro{" "}
-                    <FontAwesomeIcon
-                      icon={faExternalLinkAlt}
-                      className="ms-1"
-                    />
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </>
-  );
-}
+    <div>
+      {/* Show an error message if an error occurred during logout */}
+      {/* {error && <Alert variant="danger">{error}</Alert>} */}
 
-export default Upgrade;
+      {/* Show a success message if logout is successful */}
+      {/* {success && <Alert variant="success">{success}</Alert>} */}
+
+      {/* Button to trigger logout */}
+      <Button
+        variant="secondary"
+        className="upgrade-to-pro"
+        onClick={handleLogout}
+        disabled={loading}
+      >
+        {loading ? (
+          <span>Logging out...</span>
+        ) : (
+          <>
+            <FontAwesomeIcon icon={faSignOutAlt} className="me-1" /> Logout
+          </>
+        )}
+      </Button>
+
+      {/* Black screen overlay */}
+      {isLoggingOut && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.7)", // Black background with some opacity
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "24px",
+            fontWeight: "bold",
+            zIndex: 9999, // Ensure the overlay is on top of other elements
+          }}
+        >
+          Logging out...
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Logout;
