@@ -58,7 +58,7 @@ function SignUp() {
     try {
       // Send POST request to your backend API to register the user
       const response = await axios.post(
-        "https://skywaker1-jaz4-9w0brk8hp-ayushs-projects-0d0a6860.vercel.app/api/auth/register", // Replace with your backend endpoint
+        "http://localhost:4100/api/auth/register", // Replace with your backend endpoint
         {
           name,
           email,
