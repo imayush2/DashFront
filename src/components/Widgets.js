@@ -140,8 +140,8 @@ export const CounterWidget = (props) => {
               <h3 className="mb-1">{title}</h3>
             </div>
             <small>
-              {period}, <FontAwesomeIcon icon={faGlobeEurope} size="xs" />{" "}
-              WorldWide
+              {/* {period}, <FontAwesomeIcon icon={faGlobeEurope} size="xs" />{" "} */}
+              {/* WorldWide */}
             </small>
             <div className="small mt-2">
               <FontAwesomeIcon
@@ -188,7 +188,7 @@ export const CircleChartWidget = (props) => {
                   className={`icon icon-xs text-${d.color} w-20 me-1`}
                 />
                 {` ${d.label} `}
-                {`${d.value}%`}
+                {/* {`${d.value}`} */}
               </h6>
             ))}
           </Col>

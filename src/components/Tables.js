@@ -58,14 +58,8 @@ export const PageVisitsTable = () => {
       <tr>
         <th scope="row">{pageName}</th>
         <td>{views}</td>
-        <td>${returnValue}</td>
-        <td>
-          <FontAwesomeIcon
-            icon={bounceIcon}
-            className={`${bounceTxtColor} me-3`}
-          />
-          {Math.abs(bounceRate)}%
-        </td>
+        <td>{returnValue}</td>
+        <td>{Math.abs(bounceRate)}</td>
       </tr>
     );
   };
@@ -88,9 +82,9 @@ export const PageVisitsTable = () => {
         <thead className="thead-light">
           <tr>
             <th scope="col">Doctor name</th>
-            <th scope="col">Doctor Views</th>
-            <th scope="col">Fees</th>
-            <th scope="col">ratings</th>
+            <th scope="col">Diseases Title</th>
+            <th scope="col">Hospital</th>
+            <th scope="col">Contact</th>
           </tr>
         </thead>
         <tbody>

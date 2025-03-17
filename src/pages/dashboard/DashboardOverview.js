@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react"; // Import useState here
+import DatePickerComponent from "../components/DatePickerComponent";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import {
 //   faCashRegister,
@@ -71,6 +72,9 @@ const Dashboard = () => {
             Export
           </Button>
         </ButtonGroup> */}
+
+        {/* Date Picker Component */}
+        <DatePickerComponent />
       </div>
 
       <Row className="justify-content-md-center">
@@ -88,6 +92,8 @@ const Dashboard = () => {
             percentage={10.57}
           />
         </Col> */}
+
+        {/* // no of doctors  */}
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
             category="No. of Doctors"
@@ -99,22 +105,25 @@ const Dashboard = () => {
           />
         </Col>
 
+        {/* // no of users  */}
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="No. of Patients"
-            title="435"
-            period="Feb 1 - Apr 1"
+            category="No. of user"
+            title="4"
+            // period="Feb 1 - Apr 1"
             percentage={28.4}
             icon={faHospital}
             iconColor="shape-tertiary"
           />
         </Col>
 
+        {/* //disesase */}
         <Col xs={12} sm={6} xl={4} className="mb-4">
-          <CircleChartWidget title="Users" data={trafficShares} />
+          <CircleChartWidget title="Diseases" data={trafficShares} />
         </Col>
       </Row>
 
+      {/* //table */}
       <Row>
         <Col xs={12} xl={12} className="mb-4">
           <Row>
@@ -124,34 +133,31 @@ const Dashboard = () => {
                   <PageVisitsTable />
                 </Col>
 
-                <Col xs={12} lg={6} className="mb-4">
-                  <TeamMembersWidget />
-                </Col>
-
-                <Col xs={12} lg={6} className="mb-4">
+                {/* <Col xs={12} lg={6} className="mb-4">
+                  // <TeamMembersWidget />
+                </Col>{" "} */}
+                {/* <Col xs={12} lg={6} className="mb-4">
                   <ProgressTrackWidget />
-                </Col>
+                </Col> */}
               </Row>
             </Col>
 
             <Col xs={12} xl={4}>
               <Row>
-                <Col xs={12} className="mb-4">
+                {/* <Col xs={12} className="mb-4">
                   <BarChartWidget
-                    title="Total orders"
+                    title="No of patients"
                     value={452}
                     percentage={18.2}
                     data={totalOrders}
                   />
-                </Col>
-
-                <Col xs={12} className="px-0 mb-4">
+                </Col> */}
+                {/* <Col xs={12} className="px-0 mb-4">
                   <RankingWidget />
-                </Col>
-
-                <Col xs={12} className="px-0">
+                </Col> */}
+                {/* <Col xs={12} className="px-0">
                   <AcquisitionWidget />
-                </Col>
+                </Col> */}
               </Row>
             </Col>
           </Row>

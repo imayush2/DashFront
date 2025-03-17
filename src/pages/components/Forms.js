@@ -10,24 +10,19 @@ import {
 } from "@themesberg/react-bootstrap";
 
 export default () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDiseases, setSelectedDiseases] = useState([]);
   const [loading, setLoading] = useState(false); // State to track loading status
 
-  // Predefined disease categories and related diseases
-  const diseaseCategories = {
-    Chronic: ["Diabetes", "Hypertension", "Asthma"],
-    Acute: ["Flu", "Pneumonia", "Gastroenteritis"],
-    Infectious: ["COVID-19", "Tuberculosis", "Hepatitis"],
-    Genetic: ["Cystic Fibrosis", "Sickle Cell Anemia", "Down Syndrome"],
-    Autoimmune: ["Rheumatoid Arthritis", "Lupus", "Multiple Sclerosis"],
-  };
-
-  // Handle category change
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-    setSelectedDiseases([]); // Clear previously selected diseases
-  };
+  // All diseases
+  const diseases = [
+    "Liver cancer",
+    "Diabetes",
+    "Hypertension",
+    "Asthma",
+    "COVID-19",
+    "Tuberculosis",
+    "Hepatitis",
+  ];
 
   // Handle disease selection (checkbox change)
   const handleDiseaseChange = (e) => {
@@ -41,16 +36,31 @@ export default () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); // Start the loader
 
-    // Simulate a delay for the loading spinner
-    setTimeout(() => {
-      setLoading(false); // Stop the loader after submission is complete
-      console.log("Selected Diseases:", selectedDiseases);
-    }, 2000); // Simulating a 2-second delay
+    try {
+      const response = await fetch("http://127.0.0.1:5000/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ selectedDiseases }),
+      });
+
+      const result = await response.json(); // Parse the JSON response
+
+      if (response.ok) {
+        console.log("Scraping completed successfully:", result.message);
+      } else {
+        console.error("Error during scraping:", result.error);
+      }
+    } catch (error) {
+      console.error("Error during API request:", error);
+    } finally {
+      setLoading(false); // Stop the loader
+    }
   };
 
   return (
@@ -65,48 +75,26 @@ export default () => {
             <Card className="shadow-lg border-light">
               <Card.Body>
                 <div className="text-center mb-4">
-                  <h1>Select Disease Type</h1>
-                  <p>Select a disease category and choose related diseases.</p>
+                  <h1>Select Disease(s)</h1>
+                  <p>Select diseases directly from the list below.</p>
                 </div>
 
                 <Form onSubmit={handleSubmit}>
-                  {/* Disease Category Dropdown */}
+                  {/* Disease Type Multi-Select with Checkboxes */}
                   <Form.Group className="mb-3">
-                    <Form.Label>Select Disease Category</Form.Label>
-                    <Form.Control
-                      as="select"
-                      onChange={handleCategoryChange}
-                      value={selectedCategory}
-                    >
-                      <option value="">Choose a disease category</option>
-                      {Object.keys(diseaseCategories).map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </Form.Control>
+                    <Form.Label>Select Disease(s)</Form.Label>
+                    {diseases.map((disease, index) => (
+                      <Form.Check
+                        key={index}
+                        type="checkbox"
+                        id={`disease-${index}`}
+                        label={disease}
+                        value={disease}
+                        checked={selectedDiseases.includes(disease)}
+                        onChange={handleDiseaseChange}
+                      />
+                    ))}
                   </Form.Group>
-
-                  {/* Disease Type Multi-Select with Checkboxes (only visible if a category is selected) */}
-                  {selectedCategory && (
-                    <Form.Group className="mb-3">
-                      <Form.Label>Select Disease(s)</Form.Label>
-                      {diseaseCategories[selectedCategory].map(
-                        (disease, index) => (
-                          <Form.Check
-                            key={index}
-                            type="checkbox"
-                            id={`disease-${index}`}
-                            label={disease}
-                            value={disease}
-                            checked={selectedDiseases.includes(disease)}
-                            onChange={handleDiseaseChange}
-                            custom
-                          />
-                        )
-                      )}
-                    </Form.Group>
-                  )}
 
                   {/* Display Selected Diseases */}
                   <div className="mt-3">

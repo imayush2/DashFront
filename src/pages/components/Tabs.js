@@ -1,222 +1,274 @@
+// src/components/UserList.js
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleLeft,
-  faEnvelope,
-  faUnlockAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faFacebookF,
-  faGithub,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  Col,
-  Row,
-  Form,
-  Card,
-  Button,
-  FormCheck,
-  Container,
-  InputGroup,
-  Alert,
-} from "@themesberg/react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios"; // Import axios for sending HTTP requests
+import { Button, Modal, Form, Container } from "react-bootstrap"; // Importing necessary components
+import BootstrapTable from "react-bootstrap-table-next"; // Importing react-bootstrap-table-next for data table
+import cellEditFactory from "react-bootstrap-table2-editor"; // Import for editable cells (optional, remove if not needed)
+import paginationFactory from "react-bootstrap-table2-paginator"; // Pagination for the table
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"; // Import necessary CSS
 
-import { Routes } from "../../routes";
-import BgImage from "../../assets/img/illustrations/signin.svg";
+const UserList = () => {
+  const [showModal, setShowModal] = useState(false); // Manage modal visibility
+  const [newUser, setNewUser] = useState({
+    userId: "",
+    name: "",
+    email: "",
+    role: "",
+    date: "",
+  });
+  const [users, setUsers] = useState([]); // Store list of users
 
-export default () => {
-  const [name, setName] = useState(""); // Added name state
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [users, setUsers] = useState([]); // State for storing list of users
-  const [isFormVisible, setFormVisible] = useState(false); // State for toggling form visibility
+  // Handle form changes to update user input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({
+      ...newUser,
+      [name]: value,
+    });
+  };
 
-  // Handle form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setErrorMessage(""); // Reset error message
-    setSuccessMessage(""); // Reset success message
-
-    // Basic form validation
-    if (!name || !email || !password) {
-      setErrorMessage("All fields are required.");
-      return;
-    }
-
-    // Password validation: Ensure it's at least 6 characters long
-    if (password.length < 6) {
-      setErrorMessage("Password must be at least 6 characters.");
-      return;
-    }
-
-    try {
-      // Send POST request to your backend API to register the user
-      const response = await axios.post(
-        "http://localhost:4100/api/auth/register", // Replace with your backend endpoint
-        {
-          name,
-          email,
-          password,
-          role: "user", // Set role as "user" by default
-        }
-      );
-
-      if (response.data.success) {
-        setSuccessMessage("Registration successful!");
-
-        // Add the new user to the users list in the state
-        setUsers([...users, { name, email, password }]);
-
-        // Reset form fields after successful submission
-        setName("");
-        setEmail("");
-        setPassword("");
-      } else {
-        setErrorMessage(
-          response.data.message || "An error occurred. Please try again."
-        );
-      }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        setErrorMessage(error.response.data.message || "Registration failed");
-      } else {
-        setErrorMessage(
-          "An error occurred while registering. Please try again."
-        );
-      }
+  // Handle adding user
+  const handleAddUser = (e) => {
+    e.preventDefault();
+    if (
+      newUser.name &&
+      newUser.email &&
+      newUser.role &&
+      newUser.userId &&
+      newUser.date
+    ) {
+      setUsers([...users, newUser]);
+      setNewUser({ userId: "", name: "", email: "", role: "", date: "" }); // Reset user input after adding
+      setShowModal(false); // Close modal after adding user
+    } else {
+      alert("Please fill in all fields.");
     }
   };
 
-  const toggleFormVisibility = () => {
-    setFormVisible(!isFormVisible);
+  // Open modal
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  // Close modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Columns for the table
+  const columns = [
+    {
+      text: "User ID",
+      formatter: (cellContent, row) => <span>{row.userId}</span>,
+      editorRenderer: (
+        editorProps,
+        value,
+        row,
+        column,
+        rowIndex,
+        columnIndex,
+        done
+      ) => (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => done(e.target.value)}
+        />
+      ),
+    },
+    {
+      text: "Name",
+      formatter: (cellContent, row) => <span>{row.name}</span>,
+      editorRenderer: (
+        editorProps,
+        value,
+        row,
+        column,
+        rowIndex,
+        columnIndex,
+        done
+      ) => (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => done(e.target.value)}
+        />
+      ),
+    },
+    {
+      text: "Email",
+      formatter: (cellContent, row) => <span>{row.email}</span>,
+      editorRenderer: (
+        editorProps,
+        value,
+        row,
+        column,
+        rowIndex,
+        columnIndex,
+        done
+      ) => (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => done(e.target.value)}
+        />
+      ),
+    },
+    {
+      text: "Role",
+      formatter: (cellContent, row) => <span>{row.role}</span>,
+      editorRenderer: (
+        editorProps,
+        value,
+        row,
+        column,
+        rowIndex,
+        columnIndex,
+        done
+      ) => (
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => done(e.target.value)}
+        />
+      ),
+    },
+    {
+      text: "Date",
+      formatter: (cellContent, row) => <span>{row.date}</span>,
+      editorRenderer: (
+        editorProps,
+        value,
+        row,
+        column,
+        rowIndex,
+        columnIndex,
+        done
+      ) => (
+        <input
+          type="date"
+          value={value}
+          onChange={(e) => done(e.target.value)}
+        />
+      ),
+    },
+  ];
+
+  const paginationOptions = {
+    sizePerPage: 5,
+    hideSizePerPage: true,
+    nextPageText: "Next",
+    prePageText: "Previous",
+    firstPageText: "First",
+    lastPageText: "Last",
   };
 
   return (
-    <main>
-      <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
-        <Container>
-          <p className="text-center">
-            <Card.Link
-              as={Link}
-              to={Routes.DashboardOverview.path}
-              className="text-gray-700"
-            >
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-              homepage
-            </Card.Link>
-          </p>
-          <Row
-            className="justify-content-center form-bg-image"
-            style={{ backgroundImage: `url(${BgImage})` }}
-          >
-            <Col
-              xs={12}
-              className="d-flex align-items-center justify-content-center"
-            >
-              <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <div className="text-center text-md-center mb-4 mt-md-0">
-                  <h3 className="mb-0">Manage Users</h3>
-                </div>
+    <Container fluid className="mt-5">
+      {/* Move the button to the right side */}
+      <div className="d-flex justify-content-end mb-4">
+        <Button
+          variant="primary"
+          onClick={handleShowModal}
+          style={styles.customButton}
+        >
+          Add User
+        </Button>
+      </div>
 
-                {/* Display error or success messages */}
-                {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-                {successMessage && (
-                  <Alert variant="success">{successMessage}</Alert>
-                )}
+      {/* React Bootstrap Table with custom styling */}
+      <BootstrapTable
+        keyField="userId" // Set a unique key for each row
+        data={users}
+        columns={columns}
+        // pagination={paginationFactory(paginationOptions)}
+        cellEdit={cellEditFactory({ mode: "click", blurToSave: true })}
+        classes="custom-table" // Apply custom table styles
+        style={styles.customTable} // Apply custom table border style
+      />
 
-                {/* Button to toggle the form */}
-                <Button
-                  variant="primary"
-                  onClick={toggleFormVisibility}
-                  className="w-100 mb-3"
-                >
-                  {isFormVisible ? "Cancel" : "Add User"}
-                </Button>
+      {/* Modal for adding user */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleAddUser}>
+            <Form.Group className="mb-3" controlId="userId">
+              <Form.Label>User ID</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter User ID"
+                name="userId"
+                value={newUser.userId}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-                {/* If the form is visible, display the form */}
-                {isFormVisible && (
-                  <Form className="mt-4" onSubmit={handleSubmit}>
-                    <Form.Group id="name" className="mb-4">
-                      <Form.Label>Your Name</Form.Label>
-                      <InputGroup>
-                        <Form.Control
-                          type="text"
-                          placeholder="Your Name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                        />
-                      </InputGroup>
-                    </Form.Group>
+            <Form.Group className="mb-3" controlId="userName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                value={newUser.name}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-                    <Form.Group id="email" className="mb-4">
-                      <Form.Label>Your Email</Form.Label>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faEnvelope} />
-                        </InputGroup.Text>
-                        <Form.Control
-                          type="email"
-                          placeholder="example@company.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                      </InputGroup>
-                    </Form.Group>
+            <Form.Group className="mb-3" controlId="userEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                value={newUser.email}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-                    <Form.Group id="password" className="mb-4">
-                      <Form.Label>Your Password</Form.Label>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faUnlockAlt} />
-                        </InputGroup.Text>
-                        <Form.Control
-                          type="password"
-                          placeholder="Password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                      </InputGroup>
-                    </Form.Group>
+            <Form.Group className="mb-3" controlId="userRole">
+              <Form.Label>Role</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter role"
+                name="role"
+                value={newUser.role}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-                    <FormCheck type="checkbox" className="d-flex mb-4">
-                      <FormCheck.Input id="terms" className="me-2" />
-                      <FormCheck.Label htmlFor="terms">
-                        I agree to the{" "}
-                        <Card.Link>terms and conditions</Card.Link>
-                      </FormCheck.Label>
-                    </FormCheck>
+            <Form.Group className="mb-3" controlId="userDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Enter date"
+                name="date"
+                value={newUser.date}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-                    <Button variant="primary" type="submit" className="w-100">
-                      Add user
-                    </Button>
-                  </Form>
-                )}
-
-                {/* Display the list of users */}
-                <div className="mt-4">
-                  <h4>Added Users</h4>
-                  <ul>
-                    {users.length === 0 ? (
-                      <li>No users added yet.</li>
-                    ) : (
-                      users.map((user, index) => (
-                        <li key={index}>
-                          {user.name} - {user.email}
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </main>
+            <Button variant="primary" type="submit" style={styles.customButton}>
+              Add User
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </Container>
   );
 };
+
+// Inline styles for custom boundaries
+const styles = {
+  customTable: {
+    border: "4px solid #333", // Darker and bolder border for the table
+    borderRadius: "5px",
+    borderCollapse: "collapse", // Ensures borders are continuous
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", // Optional shadow for more emphasis
+  },
+  customButton: {
+    border: "2px solid #333", // Darker border for the button
+  },
+};
+
+export default UserList;
