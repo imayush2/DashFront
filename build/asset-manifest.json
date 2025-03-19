@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "./static/css/main.ad4276d1.css",
+    "main.js": "./static/js/main.7e61c1b8.js",
+    "static/media/profile-picture-1.jpg": "./static/media/profile-picture-1.e783b80fc08aa743b526.jpg",
+    "static/media/profile-picture-4.jpg": "./static/media/profile-picture-4.97bdda51efaf61fc8e69.jpg",
+    "static/media/profile-picture-5.jpg": "./static/media/profile-picture-5.fff93226a753730ae1a9.jpg",
+    "static/media/profile-cover.jpg": "./static/media/profile-cover.4b034f4145c8deca4019.jpg",
+    "static/media/signin.svg": "./static/media/signin.454f944b6a4061b0ac2932fc2ba2de17.svg",
+    "static/media/profile-picture-3.jpg": "./static/media/profile-picture-3.5eb120b246b797756a74.jpg",
+    "static/media/profile-picture-2.jpg": "./static/media/profile-picture-2.6d657a5c6d7687026fb4.jpg",
+    "static/media/404.svg": "./static/media/404.59d1f9fdba8996c7b96966e44ec51e9a.svg",
+    "static/media/500.svg": "./static/media/500.d508258f709520f00e23f43ca802434b.svg",
+    "static/media/doctor.jpg": "./static/media/doctor.4850a5a913f6bb36eb4d.jpg",
+    "static/media/react-logo.svg": "./static/media/react-logo.0d6bd2523f468e49adebf952dbddeaa2.svg",
+    "static/media/react-hero-logo.svg": "./static/media/react-hero-logo.d389da8b82651c4ee0affa66316cc3dd.svg",
+    "index.html": "./index.html",
+    "static/media/united-kingdom.svg": "./static/media/united-kingdom.2d19fed4fb288f7b8a8591bbe3b70429.svg",
+    "static/media/united-states-of-america.svg": "./static/media/united-states-of-america.c29455bd55edb5ef966c8d28713423f8.svg",
+    "static/media/themesberg.svg": "./static/media/themesberg.f3d7e25730222aa78f07567aab394245.svg",
+    "static/media/laravel-logo.svg": "./static/media/laravel-logo.742529fa7e6151b9846e52b3283d8396.svg",
+    "static/media/canada.svg": "./static/media/canada.0c7f14f9bf13aa6d3ff5e0f5ec1b82d2.svg",
+    "static/media/react-logo-primary.svg": "./static/media/react-logo-primary.5760e58fc2a2e3a36c6e83b84a35062e.svg",
+    "static/media/react-logo-transparent.svg": "./static/media/react-logo-transparent.c39e9569d949a0a4ae9790355be6f3f3.svg",
+    "static/media/bootstrap-5-logo.svg": "./static/media/bootstrap-5-logo.98585727bcfe0b1555649ec9bbab236c.svg",
+    "static/media/germany.svg": "./static/media/germany.cf16b1b66abc0caadc40a0da0caddaa8.svg",
+    "static/media/france.svg": "./static/media/france.40c79af5ce5231775ae018679c075255.svg",
+    "static/media/italy.svg": "./static/media/italy.2b31e5a9b8b01c282c2bd29d19aeb338.svg",
+    "static/media/japan.svg": "./static/media/japan.382df14ffa58a6b46ba7a8819f58c9c4.svg",
+    "main.ad4276d1.css.map": "./static/css/main.ad4276d1.css.map",
+    "main.7e61c1b8.js.map": "./static/js/main.7e61c1b8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ad4276d1.css",
+    "static/js/main.7e61c1b8.js"
+  ]
+}
