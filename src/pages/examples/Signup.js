@@ -58,7 +58,7 @@ function SignUp() {
     try {
       // Send POST request to your backend API to register the user
       const response = await axios.post(
-        "http://localhost:25060/api/auth/register", // Replace with your backend endpoint
+        "http://localhost:5000/api/auth/register", // Replace with your backend endpoint
         {
           name,
           email,
