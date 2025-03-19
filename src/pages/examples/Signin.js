@@ -23,15 +23,12 @@ import {
 } from "@themesberg/react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
 
-// Convert arrow function to function declaration
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // Default to user
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -52,18 +49,18 @@ function SignIn() {
     try {
       // Send POST request to backend API
       const response = await axios.post(
-        "http://localhost:4100/api/auth/login",
+        "http://localhost:25060/api/auth/login", // Make sure to use correct API endpoint
         {
           email,
           password,
-          role, // Send role information
         }
       );
 
+      // Check the response for success
       if (response.data.success) {
-        setSuccessMessage(response.data.message || "Login successful!");
+        setSuccessMessage("Login successful!");
 
-        // Store token in localStorage for persistence (or cookies if preferred)
+        // Store token in localStorage for persistence
         localStorage.setItem("token", response.data.token);
 
         // Redirect based on the user's role
@@ -87,16 +84,6 @@ function SignIn() {
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
-          {/* <p className="text-center">
-            <Card.Link
-              as={Link}
-              to={Routes.DashboardOverview.path}
-              className="text-gray-700"
-            >
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-              homepage
-            </Card.Link>
-          </p> */}
           <Row
             className="justify-content-center form-bg-image"
             style={{ backgroundImage: `url(${BgImage})` }}
@@ -131,21 +118,6 @@ function SignIn() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                    </InputGroup>
-                  </Form.Group>
-
-                  <Form.Group id="role" className="mb-4">
-                    <Form.Label>User Role</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        as="select"
-                        required
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                      >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                      </Form.Control>
                     </InputGroup>
                   </Form.Group>
 
@@ -226,5 +198,4 @@ function SignIn() {
   );
 }
 
-// Export the component as default
 export default SignIn;

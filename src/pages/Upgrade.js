@@ -28,7 +28,7 @@ const Logout = () => {
     try {
       console.log("Logging out... Sending logout request");
 
-      const response = await fetch("http://localhost:4100/api/auth/logout", {
+      const response = await fetch("http://localhost:25060/api/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

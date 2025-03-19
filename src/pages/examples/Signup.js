@@ -58,12 +58,12 @@ function SignUp() {
     try {
       // Send POST request to your backend API to register the user
       const response = await axios.post(
-        "http://localhost:4100/api/auth/register", // Replace with your backend endpoint
+        "http://localhost:25060/api/auth/register", // Replace with your backend endpoint
         {
           name,
           email,
           password,
-          role, // Include the role in the registration data
+          // Include the role in the registration data
         }
       );
 
@@ -73,7 +73,7 @@ function SignUp() {
         );
         // Redirect to login page after successful registration
         setTimeout(() => {
-          history.push(Routes.Signin.path);
+          history.push(Routes.Signin.path); // Redirect to login page
         }, 2000);
       } else {
         setErrorMessage(
@@ -81,7 +81,22 @@ function SignUp() {
         );
       }
     } catch (error) {
-      setErrorMessage("An error occurred while registering. Please try again.");
+      // Enhanced error handling
+      if (error.response) {
+        // If the server responded with an error message
+        setErrorMessage(
+          error.response.data.message ||
+            "An error occurred while registering. Please try again."
+        );
+      } else if (error.request) {
+        // If the request was made but no response was received
+        setErrorMessage("No response from the server. Please try again later.");
+      } else {
+        // If an error occurred while setting up the request
+        setErrorMessage(
+          "An error occurred while registering. Please try again."
+        );
+      }
     }
   };
 
@@ -89,16 +104,6 @@ function SignUp() {
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
-          <p className="text-center">
-            <Card.Link
-              as={Link}
-              to={Routes.DashboardOverview.path}
-              className="text-gray-700"
-            >
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-              homepage
-            </Card.Link>
-          </p>
           <Row
             className="justify-content-center form-bg-image"
             style={{ backgroundImage: `url(${BgImage})` }}
@@ -115,7 +120,7 @@ function SignUp() {
                 {/* Display error or success messages */}
                 {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
                 {successMessage && (
-                  <Alert variant="success">{successMessage}</Alert>
+                  <Alert variant="success">{successMessage}</Alert> // Success message in green
                 )}
 
                 <Form className="mt-4" onSubmit={handleSubmit}>
@@ -150,7 +155,7 @@ function SignUp() {
                   </Form.Group>
 
                   {/* Role selection for Admin */}
-                  <Form.Group id="role" className="mb-4">
+                  {/* <Form.Group id="role" className="mb-4">
                     <Form.Label>Select Role</Form.Label>
                     <Form.Control
                       as="select"
@@ -160,7 +165,7 @@ function SignUp() {
                       <option value="user">User</option>
                       <option value="admin">Admin</option>
                     </Form.Control>
-                  </Form.Group>
+                  </Form.Group> */}
 
                   <Form.Group id="password" className="mb-4">
                     <Form.Label>Your Password</Form.Label>
@@ -209,6 +214,8 @@ function SignUp() {
                 <div className="mt-3 mb-4 text-center">
                   <span className="fw-normal">or</span>
                 </div>
+
+                {/* Social Media Login Buttons */}
                 <div className="d-flex justify-content-center my-4">
                   <Button
                     variant="outline-light"
@@ -229,6 +236,7 @@ function SignUp() {
                     <FontAwesomeIcon icon={faGithub} />
                   </Button>
                 </div>
+
                 <div className="d-flex justify-content-center align-items-center mt-4">
                   <span className="fw-normal">
                     Already have an account?
