@@ -49,7 +49,7 @@ function SignIn() {
     try {
       // Send POST request to backend API
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login", // Make sure to use correct API endpoint
+        "http://localhost:5001/api/auth/login", // Make sure to use correct API endpoint
         {
           email,
           password,
