@@ -41,7 +41,7 @@ export default () => {
     setLoading(true); // Start the loader
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/scrape", {
+      const response = await fetch("http://51.21.243.123:5001/scrape", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

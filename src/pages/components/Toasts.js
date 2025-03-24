@@ -1,106 +1,79 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
-import { Col, Row, Card, Toast, Button, Container } from '@themesberg/react-bootstrap';
+const ClinicalTrialsTable = () => {
+  const [trials, setTrials] = useState([]);
 
-import Documentation from "../../components/Documentation";
+  useEffect(() => {
+    const fetchTrials = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/trial/clinical-trials"
+        );
+        setTrials(response.data);
+      } catch (error) {
+        console.error("Error fetching clinical trials data:", error);
+      }
+    };
 
-
-export default () => {
-  const [showDefault, setShowDefault] = useState(true);
-  const [showPrimary, setShowPrimary] = useState(true);
-  const [showTertiary, setShowTertiary] = useState(true);
-
-  const handleCloseDefault = () => setShowDefault(false);
-  const handleClosePrimary = () => setShowPrimary(false);
-  const handleCloseTertiary = () => setShowTertiary(false);
+    fetchTrials();
+  }, []);
 
   return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Toasts</h1>
-            <p className="mb-0">
-              Use toasts to indicate messages.
-          </p>
-          </Col>
-        </Row>
-
-        <Documentation
-          title="Example"
-          description={
-            <>
-              <p>Use the <code>&#x3C;Toast&#x3E;</code> component to show messages and notifications to the user. The component is split into two main subcomponents: <code>&#x3C;Toast.Header&#x3E;</code> and <code>&#x3C;Toast.Body&#x3E;</code> where you can add the text that you want.</p>
-              <p>You can also use the <code>handleClose</code> function to handle the event of closing the component.</p>
-            </>
-          }
-          scope={{ Card, Toast, Button, useState, FontAwesomeIcon, faBootstrap, showDefault, setShowDefault, handleCloseDefault }}
-          imports={`import React, { useState } from 'react';
-import { Card, Toast, Button } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
-
-const [showDefault, setShowDefault] = useState(true);
-const toggleDefaultToast = () => setShowDefault(!showDefault);`}
-          example={`<Toast show={showDefault} onClose={handleCloseDefault} className="my-3">
-    <Toast.Header className="text-primary" closeButton={false}>
-        <FontAwesomeIcon icon={faBootstrap} />
-        <strong className="me-auto ms-2">Volt</strong>
-        <small>11 mins ago</small>
-        <Button variant="close" size="xs" onClick={handleCloseDefault} />
-    </Toast.Header>
-    <Toast.Body>
-        Hello, world! This is a toast message.
-    </Toast.Body>
-</Toast>`}
-        />
-
-        <Documentation
-          title="Colors"
-          description={
-            <p>If you'd like to customize the appearance of the <code>&#x3C;Toast&#x3E;</code> component, you can easily do so by adding a <code>bg-primary</code>, <code>bg-secondary</code>, and any other <code>bg-*</code> modifier class to the main <code>&#x3C;Toast&#x3E;</code> component.</p>
-          }
-          scope={{ Toast, Button, useState, FontAwesomeIcon, faBootstrap, showPrimary, setShowPrimary, handleClosePrimary, showTertiary, setShowTertiary, handleCloseTertiary }}
-          imports={`import React, { useState } from 'react';
-import { Toast, Button } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
-
-const [showPrimary, setShowPrimary] = useState(true);
-const [showTertiary, setShowTertiary] = useState(true);
-
-const handleClosePrimary = () => setShowPrimary(false);
-const handleCloseTertiary = () => setShowTertiary(false);`}
-          example={`<React.Fragment>
-  <Toast show={showPrimary} onClose={handleClosePrimary} className="bg-primary text-white my-3">
-      <Toast.Header className="text-primary" closeButton={false}>
-          <FontAwesomeIcon icon={faBootstrap} />
-          <strong className="me-auto ms-2">Themesberg</strong>
-          <small>11 mins ago</small>
-          <Button variant="close" size="xs" onClick={handleClosePrimary} />
-      </Toast.Header>
-      <Toast.Body>
-          Hello, world! This is a toast message.
-      </Toast.Body>
-  </Toast>
-
-  <Toast show={showTertiary} onClose={handleCloseTertiary} className="bg-secondary text-white my-3">
-      <Toast.Header className="text-primary" closeButton={false}>
-          <FontAwesomeIcon icon={faBootstrap} />
-          <strong className="me-auto ms-2">Themesberg</strong>
-          <small>11 mins ago</small>
-          <Button variant="close" size="xs" onClick={handleCloseTertiary} />
-      </Toast.Header>
-      <Toast.Body>
-          Hello, world! This is a toast message.
-      </Toast.Body>
-  </Toast>
-</React.Fragment>`}
-        />
-
-      </Container>
-    </article>
+    <div>
+      <h1>Clinical Trials Data</h1>
+      <table border="1" cellPadding="10">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Source</th>
+            <th>Disease Title Searched</th>
+            <th>Data Export Date</th>
+            <th>Trial ID</th>
+            <th>Affiliation</th>
+            <th>Full Name</th>
+            <th>Contact Email</th>
+            <th>Contact Tel</th>
+            <th>Contact Address</th>
+            <th>Countries</th>
+            <th>Primary Sponsor</th>
+            <th>Public Title</th>
+            <th>Last Refreshed On</th>
+            <th>Web Address</th>
+            <th>Recruitment Status</th>
+            <th>PubMed Total Results</th>
+            <th>Social Media Links</th>
+            <th>Google Search Key</th>
+          </tr>
+        </thead>
+        <tbody>
+          {trials.map((trial) => (
+            <tr key={trial.id}>
+              <td>{trial.id}</td>
+              <td>{trial.Source}</td>
+              <td>{trial["Disease Title Searched"]}</td>
+              <td>{trial["Data Export Date"]}</td>
+              <td>{trial["Trial ID"]}</td>
+              <td>{trial.Affiliation}</td>
+              <td>{trial["Full Name"]}</td>
+              <td>{trial["Contact Email"]}</td>
+              <td>{trial["Contact Tel"]}</td>
+              <td>{trial["Contact Address"]}</td>
+              <td>{trial.Countries}</td>
+              <td>{trial["Primary Sponsor"]}</td>
+              <td>{trial["Public Title"]}</td>
+              <td>{trial["Last Refreshed On"]}</td>
+              <td>{trial["Web Address"]}</td>
+              <td>{trial["Recruitment Status"]}</td>
+              <td>{trial["PubMed Total Results"]}</td>
+              <td>{trial["Social Media Links"]}</td>
+              <td>{trial["Google Search Key"]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
+
+export default ClinicalTrialsTable;

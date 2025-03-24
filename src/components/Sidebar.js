@@ -230,10 +230,8 @@ export default (props = {}) => {
               />
 
               <NavItem
-                external
                 title="All data"
-                link=""
-                target="_blank"
+                link={Routes.Toasts.path}
                 // badgeText="Pro"
                 icon={faMapPin}
               />
